@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+ 
+<dom-module id="frontend-statistics">
+    <template>
+        
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <h3 class="text-center">Statistics</h3>
+                    <div class="row">
+                        <div class="col-md-4"><div class="number">{{statistics.problems}}</div> problems in the database</div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"><div class="number">{{statistics.problems}}</div> problems in the database</div>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+        
+        <iron-ajax
+            id="requestStatistics"
+            url="http://192.168.131.10:8080/statistic"
+            handle-as="json"
+            on-response="handleResponse">
+        </iron-ajax>
+    </template>
+ 
+    <script>
+        Polymer({
+            is: 'frontend-statistics',
+            properties: {
+                statistics: {
+                    type: Object
+                }
+            },
+            ready: function () {
+                this.$.requestStatistics.generateRequest();
+            },
+            handleResponse: function (data) {
+                this.statistics = data.detail.response;
+            }
+        });
+    </script>
+</dom-module>

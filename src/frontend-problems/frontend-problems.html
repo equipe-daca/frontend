@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+ 
+<dom-module id="frontend-problems">
+    <template>
+        
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <h3 class="text-center">Problems</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template is="dom-repeat" items="[[problems]]">
+                                <tr class="active">
+                                    <td>{{item.name}}</td>
+                                    <td>{{item.desc}}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+        
+        <iron-ajax
+            id="requestProblems"
+            url="http://192.168.131.10:8080/problem"
+            handle-as="json"
+            on-response="handleResponse">
+        </iron-ajax>
+    </template>
+ 
+    <script>
+        Polymer({
+            is: 'frontend-problems',
+            properties: {
+                problems: {
+                    type: Array
+                }
+            },
+            ready: function () {
+                this.$.requestProblems.generateRequest();
+            },
+            handleResponse: function (data) {
+                this.problems = data.detail.response.content;
+            }
+        });
+    </script>
+</dom-module>
